@@ -73,8 +73,8 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\ImageColumn::make('thumbnail'),
+                Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('published_at')
