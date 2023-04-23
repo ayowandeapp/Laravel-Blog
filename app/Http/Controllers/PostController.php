@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -19,6 +20,19 @@ class PostController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(5);
         return view('home')->with(compact('posts'));
+    }
+
+    public function byCategory(Category $category)
+    {
+        $posts = Post::query()
+        ->join('category_post', 'posts.id', '=', 'category_post.post_id')
+            ->where('active', 1)
+            ->whereDate('published_at', '<', Carbon::now())
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+        return view('home')->with(compact('posts'));
+
+
     }
 
     /**

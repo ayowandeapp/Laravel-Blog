@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,5 @@ use App\Http\Controllers\PostController;
 
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/{post:slug}', [PostController::class, 'show'])->name('view');
+Route::get('/category/{category:slug}', [SiteController::class, 'about'])->name('about-us');
+Route::get('/about-us', [PostController::class, 'byCategory'])->name('category');

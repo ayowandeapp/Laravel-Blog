@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind Blog Template</title>
+    <title>{{ $metaTitle ?: 'Laravel 10 Blog'}}</title>
     <meta name="author" content="">
-    <meta name="description" content="">
+    <meta name="description" content="{{ $metaDescription }}">
 
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@
     <!-- Text Header -->
     <header class="w-full container mx-auto">
         <div class="flex flex-col items-center py-12">
-            <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="#">
+            <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="{{ url('/') }}">
                 Laravel Blog
             </a>
             <p class="text-lg text-gray-600">
@@ -50,12 +50,11 @@
         </div>
         <div :class="open ? 'block': 'hidden'" class="w-full flex-grow sm:flex sm:items-center sm:w-auto">
             <div class="w-full container mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2">
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Technology</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Automotive</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Finance</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Politics</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Culture</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Sports</a>
+                @foreach($categories as $category)
+                <a href="{{ url('/category/'.$category->slug) }}" class="hover:bg-gray-400 rounded hover:text-white py-2 px-4 mx-2">{{$category->title}}</a>
+                @endforeach
+                <a href="{{ url('/about-us') }}" class="hover:bg-gray-400 rounded hover:text-white py-2 px-4 mx-2"></a>
+
             </div>
         </div>
     </nav>
