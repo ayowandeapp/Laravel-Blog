@@ -1,0 +1,27 @@
+Added SEO to the pages
+
+added new fields to the posts table,
+added category and about us resources
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is ahead of 'origin/master' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   app/Filament/Resources/PostResource.php
+#	modified:   app/Http/Controllers/PostController.php
+#	new file:   app/Http/Controllers/SiteController.php
+#	modified:   app/Models/Post.php
+#	modified:   app/View/Components/AppLayout.php
+#	modified:   app/View/Components/Sidebar.php
+#	new file:   database/migrations/2023_04_23_122123_add_meta_fields_to_posts_table.php
+#	new file:   resources/views/about.blade.php
+#	modified:   resources/views/components/post-item.blade.php
+#	modified:   resources/views/components/sidebar.blade.php
+#	modified:   resources/views/home.blade.php
+#	modified:   resources/views/layouts/app.blade.php
+#	modified:   resources/views/post/view.blade.php
+#	modified:   routes/web.php
+#
