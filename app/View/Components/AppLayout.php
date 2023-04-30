@@ -2,16 +2,20 @@
 
 namespace App\View\Components;
 
+use Illuminate\View\View;
 use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use App\Models\Category;
 
 class AppLayout extends Component
 {
     /**
-     * Create a new component instance.
+     * Get the view / contents that represents the component.
      */
+    // public function render(): View
+    // {
+    //     return view('layouts.app');
+    // }
     public function __construct(public ?string $metaTitle= null, public ?string $metaDescription=null)
     {
         //
