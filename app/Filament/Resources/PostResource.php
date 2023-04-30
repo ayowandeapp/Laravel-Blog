@@ -35,25 +35,23 @@ class PostResource extends Resource
                     Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(2040)
-                    ->reactive()
-                    ->afterStateUpdated(function(Closure $set, $state){
-                        $set('slug', Str::slug($state));
-
-                    }),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(2040),
-                    ]),
-                    
-                Forms\Components\RichEditor::make('body'),
-                Forms\Components\TextInput::make('meta_title')
-                    ->maxLength(100),
-                    ]),
+                            ->required()
+                            ->maxLength(2040)
+                            ->reactive()
+                            ->afterStateUpdated(function(Closure $set, $state){
+                                $set('slug', Str::slug($state));
+                            }),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->maxLength(2040),
+                    ]),                    
+                    Forms\Components\RichEditor::make('body'),
+                    Forms\Components\TextInput::make('meta_title')
+                        ->maxLength(100),
+                // ]),
                 Forms\Components\TextInput::make('meta_description')
                     ->maxLength(255),
-                    ]),
+                    // ]),
                 Forms\Components\Toggle::make('active')
                     ->required(),
                 Forms\Components\DateTimePicker::make('published_at')
