@@ -24,8 +24,8 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             
-            $table->dropCplumn('meta_title');
-            $table->dropCplumn('meta_description');
+            $table->dropColumn('meta_title');
+            $table->dropColumn('meta_description');
         });
     }
 };
