@@ -1,4 +1,5 @@
-<x-app-layout :meta-title = "$post->meta_title ?: $post->title" :meta-description="$post->meta_description">
+<!-- <x-app-layout :meta-title = "$post->meta_title ?: $post->title" :meta-description="$post->meta_description"> -->
+    <x-app-layout>
     <!-- Post Section -->
     <section class="w-full md:w-2/3 flex flex-col items-center px-3">
 
@@ -20,6 +21,8 @@
                 <div>
                     {!! $post->body !!}
                 </div>
+
+                <livewire:up-downvote :post="$post" />
                 
             </div>
         </article>
@@ -31,6 +34,7 @@
                     <p class="pt-2">{{$prev->title}}</p>
                 </a>
             @endif
+            @if($next)
             <a href="{{ url('/'.$next->slug) }}" class="w-1/2 bg-white shadow hover:shadow-md text-right p-6">
                 <p class="text-lg text-blue-800 font-bold flex items-center justify-end">
                     Next
@@ -38,6 +42,7 @@
                 </p>
                 <p class="pt-2">{{$next->title}}</p>
             </a>
+            @endif
         </div>
 
     </section>
