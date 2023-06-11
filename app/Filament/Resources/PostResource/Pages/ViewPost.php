@@ -16,4 +16,10 @@ class ViewPost extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\PostOverview::class
+        ];
+    }
 }
