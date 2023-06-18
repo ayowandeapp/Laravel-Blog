@@ -15,12 +15,31 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::query()
-            ->where('active', 1)
+        // $posts = Post::query()
+        //     ->where('active', 1)
+        //     ->whereDate('published_at', '<', Carbon::now())
+        //     ->orderBy('published_at', 'desc')
+        //     ->paginate(5);
+
+        $latestPost = Post::query()->where('active', 1)
             ->whereDate('published_at', '<', Carbon::now())
             ->orderBy('published_at', 'desc')
-            ->paginate(5);
-        return view('home')->with(compact('posts'));
+            ->limit(1)
+            ->first();
+        $popularPost = Post::query()
+            ->leftJoin('up_downvotes', 'posts.id', '=', 'up_downvotes.post_id')
+            ->select('posts.*', \DB::raw('COUNT(up_downvotes.id) as upvote_count'))
+            ->where(function($query){
+                $query->where('up_downvotes.is_upvote', '=', 1)
+                    ->orWhereNull('up_downvotes.is_upvote');
+                })
+            ->where('active', 1)
+            ->whereDate('published_at', '<', Carbon::now())
+            ->orderBy('upvote_count', 'desc')
+            ->groupBy('posts.id')
+            ->limit(3)
+            ->get();
+        return view('home')->with(compact('latestPost', 'popularPost'));
     }
 
     public function byCategory(Category $category)
