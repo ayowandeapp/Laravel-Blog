@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Category;
 use App\Models\PostView;
+use DB;
 
 class PostController extends Controller
 {
@@ -39,7 +40,49 @@ class PostController extends Controller
             ->groupBy('posts.id')
             ->limit(3)
             ->get();
-        return view('home')->with(compact('latestPost', 'popularPost'));
+
+            $user = request()->user();
+            if($user){
+                $leftJoin = "(SELECT cp.category_id, cp.post_id FROM up_downvotes JOIN category_post as cp ON up_downvotes.post_id = cp.post_id WHERE up_downvotes.is_upvote = 1 and up_downvotes.user_id = ?) as t";
+                $recommendedPost = Post::query()
+                    ->leftJoin('category_post  as cp', 'posts.id', 'cp.post_id')
+                    ->leftJoin(DB::raw($leftJoin), function($join){
+                        $join->on('t.category_id', '=', 'cp.category_id')
+                            ->on('t.post_id', '<>', 'cp.post_id');
+                    })
+                    ->select('posts.*')
+                    // ->where('posts.id', '<>', DB::raw('t.post_id'))
+                    ->setBindings([$user->id])
+                    ->limit(3)
+                    ->get();
+
+            }else{
+                $recommendedPost = Post::query()
+                    ->leftJoin('post_views', 'posts.id', '=', 'post_views.post_id')
+                    ->select('posts.*', \DB::raw('COUNT(post_views.id) as post_views'))
+                    ->where('active', 1)
+                    ->whereDate('published_at', '<', Carbon::now())
+                    ->orderBy('post_views', 'desc')
+                    ->groupBy('posts.id')
+                    ->limit(3)
+                    ->get();
+            }
+
+            $recentCategories = Category::query()
+                ->select('categories.*')
+                ->leftJoin('category_post', 'categories.id', '=', 'category_post.category_id')
+                ->leftJoin('posts', 'posts.id', '=', 'category_post.post_id')
+                ->selectRaw('Max(posts.published_at) as max_date')
+                ->orderByDesc('max_date')
+                ->groupBy('categories.id')
+                ->whereHas('posts', function($query){
+                    $query->where('active', 1)
+                        ->whereDate('published_at', '<', Carbon::now());
+                })
+                ->limit(5)
+                ->get();
+
+        return view('home')->with(compact('latestPost', 'recentCategories','popularPost', 'recommendedPost'));
     }
 
     public function byCategory(Category $category)
@@ -50,7 +93,7 @@ class PostController extends Controller
             ->whereDate('published_at', '<', Carbon::now())
             ->orderBy('published_at', 'desc')
             ->paginate(10);
-        return view('home')->with(compact('posts'));
+        return view('index')->with(compact('posts'));
 
 
     }
